@@ -20,5 +20,9 @@
       console.log('Close:', e.data);
       source.close();
     });
+
+    source.addEventListener('error', function(e){
+      console.log('Error:', e);
+    });
 </script>
 <% end %>
