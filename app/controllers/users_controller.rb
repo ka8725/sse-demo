@@ -10,22 +10,17 @@ class UsersController < ApplicationController
     # SSE expects the `text/event-stream` content type
     response.headers['Content-Type'] = 'text/event-stream'
 
-    last_updated = User.last_updated.first
-    sse = SSE.new(response.stream)
-    sse.write(last_updated, event: 'results') if recently_changed?(last_updated)
-  ensure
-    sse.close
-
     # last_updated = User.last_updated.first
-    # if recently_changed? last_updated
-    #   begin
-    #     sse.write({name: last_updated.name, phone: last_updated.phone}, event: 'results')
-    #   rescue IOError
-    #     # When the client disconnects, we'll get an IOError on write
-    #   ensure
-    #     sse.close
-    #   end
+    sse = SSE.new(response.stream)
+    sse.write({name: 'John'}, event: 'results')
+    sse.close
+    # 3.times do
+    #   sse.write('t', event: 'results')
+    #   sleep 1
     # end
+    # sse.write(last_updated, event: 'results') if recently_changed?(last_updated)
+  # ensure
+  #   sse.close
   end
 
   # GET /users
@@ -99,8 +94,8 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :phone)
     end
 
-    def recently_changed? last_user
-      last_user.created_at > 5.seconds.ago or
-        last_user.updated_at > 5.seconds.ago
+    def recently_changed?(last_user)
+      return false unless last_user
+      last_user.created_at > 5.seconds.ago || last_user.updated_at > 5.seconds.ago
     end
 end
