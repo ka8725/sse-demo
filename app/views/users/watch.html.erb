@@ -11,9 +11,9 @@
   <script type="text/javascript">
     var source = new EventSource('/user_stream');
 
-    // source.onmessage = function(e) {
-    //   console.log('Message: ', e);
-    // }
+    source.onmessage = function(e) {
+      document.getElementById('users').append(e.data);
+    }
 
     source.addEventListener('results', function(e){
       console.log('Received a message:', e.data);

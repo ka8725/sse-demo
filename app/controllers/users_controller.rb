@@ -12,15 +12,9 @@ class UsersController < ApplicationController
 
     # last_updated = User.last_updated.first
     sse = SSE.new(response.stream)
-    sse.write({name: 'John'}, event: 'results')
+    sse.write(name: 'John')
+  ensure
     sse.close
-    # 3.times do
-    #   sse.write('t', event: 'results')
-    #   sleep 1
-    # end
-    # sse.write(last_updated, event: 'results') if recently_changed?(last_updated)
-  # ensure
-  #   sse.close
   end
 
   # GET /users
