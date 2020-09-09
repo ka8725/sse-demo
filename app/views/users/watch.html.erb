@@ -1,32 +1,13 @@
-<h1>Exemple module ActionController::Live</h1>
-<h1> and HTML5 Server Sent Events</h1>
-
-<p>Open this page in several windows/browsers, create a new user and see them all update</p>
-<%= link_to 'Create a new user', new_user_path %>
-
 <ul id="users">
 </ul>
 
 <%= content_for :javascript do %>
   <script type="text/javascript">
-    var source = new EventSource('/user_stream');
+    var source = new EventSource('https://realtime-db-38985.firebaseio.com/todos.json');
 
-    source.onmessage = function(e) {
-      document.getElementById('users').append(e.data);
-    }
-
-    source.addEventListener('results', function(e){
-      console.log('Received a message:', e.data);
+    source.addEventListener('post', function(e){
+      console.log('Received a message:', e);
       document.getElementById('users').append(e.data);
     });
-
-    source.addEventListener('finished', function(e){
-      console.log('Close:', e.data);
-      source.close();
-    });
-
-    source.onerror = function(e) {
-      console.log('Error:', e);
-    };
 </script>
 <% end %>
